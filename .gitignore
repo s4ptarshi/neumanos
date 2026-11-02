@@ -3,6 +3,10 @@
 .env.*
 !.env.example
 
+# Cloudflare Wrangler local state and secrets
+.wrangler/
+.dev.vars*
+
 # Logs
 logs
 *.log

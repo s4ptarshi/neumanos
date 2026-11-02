@@ -199,10 +199,10 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
     host: true,
-    // Cross-Origin Isolation headers for WebContainer (Phantom Shell)
-    // Using 'credentialless' to allow OpenStreetMap tiles while enabling SharedArrayBuffer
+    // Cross-Origin-Opener-Policy stays on. COEP was removed so the Super Productivity
+    // widget iframe can load. Phantom Shell (WebContainers) needs isolation and is
+    // disabled without it.
     headers: {
-      'Cross-Origin-Embedder-Policy': 'credentialless',
       'Cross-Origin-Opener-Policy': 'same-origin',
     },
   },

@@ -53,6 +53,7 @@ const WIDGET_FILE_NAMES: Record<string, string> = {
   joke: 'JokeWidget',
   unsplash: 'UnsplashWidget',
   pomodoro: 'PomodoroWidget',
+  superproductivity: 'SuperProductivityWidget',
   reddit: 'RedditWidget',
   devto: 'DevToWidget',
   wordofday: 'WordOfDayWidget',
@@ -269,6 +270,15 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
     name: 'Pomodoro Timer',
     description: 'Focus timer for productivity',
     icon: '⏱️',
+    category: 'productivity',
+    defaultEnabled: false,
+  },
+
+  superproductivity: {
+    id: 'superproductivity',
+    name: 'Super Productivity',
+    description: 'Your Super Productivity tasks, with a button to open the app',
+    icon: '✅',
     category: 'productivity',
     defaultEnabled: false,
   },

@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { Plus, Trash2, Eye, EyeOff, RefreshCw, Globe, Pencil } from 'lucide-react';
 import { useCalendarStore } from '../../stores/useCalendarStore';
-import { importFromICS } from '../../services/icsImportExport';
+import { syncSubscription } from '../../services/icsSubscriptionSync';
 import type { UserCalendar, ICSSubscription } from '../../types';
 
 const PRESET_COLORS = [
@@ -17,7 +17,7 @@ const PRESET_COLORS = [
 export function CalendarManagementSection() {
   const {
     calendars, addCalendar, updateCalendar, deleteCalendar, toggleCalendarVisibility,
-    icsSubscriptions, addICSSubscription, removeICSSubscription, syncICSSubscription,
+    icsSubscriptions, addICSSubscription, removeICSSubscription,
   } = useCalendarStore();
 
   const [newCalName, setNewCalName] = useState('');
@@ -69,21 +69,12 @@ export function CalendarManagementSection() {
     setSyncStatus(null);
 
     try {
-      const response = await fetch(sub.url);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      const icsData = await response.text();
-      const result = importFromICS(icsData);
-
-      if (result.success && result.events) {
-        const count = syncICSSubscription(sub.id, result.events);
-        setSyncStatus({ id: sub.id, message: `Synced ${count} events`, type: 'success' });
+      const result = await syncSubscription(sub);
+      if (result.ok) {
+        setSyncStatus({ id: sub.id, message: `Synced ${result.count} events`, type: 'success' });
       } else {
-        setSyncStatus({ id: sub.id, message: result.error || 'Parse failed', type: 'error' });
+        setSyncStatus({ id: sub.id, message: result.error, type: 'error' });
       }
-    } catch (err) {
-      setSyncStatus({ id: sub.id, message: String(err), type: 'error' });
     } finally {
       setSyncingId(null);
       setTimeout(() => setSyncStatus(null), 4000);

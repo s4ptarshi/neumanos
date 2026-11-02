@@ -18,12 +18,9 @@
   # - camera=(), microphone=(): Blocked (not needed)
   # - geolocation=(self): Allowed with user prompt (WeatherMapWidget location detection)
   Permissions-Policy: camera=(), microphone=(), geolocation=(self)
-  # Cross-Origin Isolation for WebContainer (Phantom Shell)
-  # Using 'credentialless' instead of 'require-corp' to allow:
-  # - OpenStreetMap tiles (no CORP headers)
-  # - Other anonymous cross-origin resources
-  # While still enabling SharedArrayBuffer for WebContainers
-  Cross-Origin-Embedder-Policy: credentialless
+  # Cross-Origin-Opener-Policy stays on. COEP was removed so the Super Productivity
+  # iframe (https://app.super-productivity.com) can load. Phantom Shell (WebContainers)
+  # needs cross-origin isolation, so it is disabled and reports "not supported".
   Cross-Origin-Opener-Policy: same-origin
   # Content Security Policy
   # - default-src 'self': Only allow resources from same origin by default
@@ -37,8 +34,8 @@
   # - connect-src: Allow self, AI providers, widget APIs, nominatim (geocoding), unpkg (Leaflet maps), cloudflareinsights (analytics), fonts (Google Fonts), map tiles (OSM)
   # - font-src: Allow self, data URIs, fonts.gstatic.com (Inter font), fonts.googleapis.com
   # - worker-src: Allow self and blobs for web workers
-  # - frame-src: Disallow iframes (security)
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com https://source.unsplash.com https://images.unsplash.com https://*.githubusercontent.com https://www.google.com https://upload.wikimedia.org https://icons.duckduckgo.com https://duckduckgo.com https://www.bing.com https://brave.com https://www.ecosia.org https://www.startpage.com https://en.wikipedia.org https://github.com https://github.githubassets.com https://cdn.sstatic.net https://www.youtube.com https://cdn.oaistatic.com https://uxwing.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.openai.com https://api.anthropic.com https://api.deepseek.com https://api.mistral.ai https://openrouter.ai https://api.x.ai https://generativelanguage.googleapis.com https://api.groq.com https://api-inference.huggingface.co https://api.together.xyz https://www.boredapi.com https://dev.to https://uselessfacts.jsph.pl https://ipapi.co https://www.producthunt.com https://en.wikipedia.org https://api.coingecko.com https://api.exchangerate-api.com https://hn.algolia.com https://www.reddit.com https://api.github.com https://api.quotable.io https://api.dictionaryapi.dev https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org https://unpkg.com https://cloudflareinsights.com https://fonts.googleapis.com https://fonts.gstatic.com https://*.tile.openstreetmap.org; worker-src 'self' blob:; frame-src 'none'
+  # - frame-src: Allow the Super Productivity widget iframe
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com https://source.unsplash.com https://images.unsplash.com https://*.githubusercontent.com https://www.google.com https://upload.wikimedia.org https://icons.duckduckgo.com https://duckduckgo.com https://www.bing.com https://brave.com https://www.ecosia.org https://www.startpage.com https://en.wikipedia.org https://github.com https://github.githubassets.com https://cdn.sstatic.net https://www.youtube.com https://cdn.oaistatic.com https://uxwing.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.openai.com https://api.anthropic.com https://api.deepseek.com https://api.mistral.ai https://openrouter.ai https://api.x.ai https://generativelanguage.googleapis.com https://api.groq.com https://api-inference.huggingface.co https://api.together.xyz https://www.boredapi.com https://dev.to https://uselessfacts.jsph.pl https://ipapi.co https://www.producthunt.com https://en.wikipedia.org https://api.coingecko.com https://api.exchangerate-api.com https://hn.algolia.com https://www.reddit.com https://api.github.com https://api.quotable.io https://api.dictionaryapi.dev https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org https://unpkg.com https://cloudflareinsights.com https://fonts.googleapis.com https://fonts.gstatic.com https://*.tile.openstreetmap.org; worker-src 'self' blob:; frame-src https://app.super-productivity.com
 
 # Cache static assets aggressively
 /assets/*

@@ -6,6 +6,7 @@ import { UndoToastContainer } from './components/UndoToast';
 import { ToastContainer } from './components/ToastContainer';
 import { useUndoStore } from './stores/useUndoStore';
 import { useSettingsStore } from './stores/useSettingsStore';
+import { useICSAutoSync } from './hooks/useICSAutoSync';
 
 // Lazy load OnboardingModal (only shown to first-time users)
 const OnboardingModal = lazy(() => import('./components/OnboardingModal').then(m => ({ default: m.OnboardingModal })));
@@ -59,6 +60,9 @@ function App() {
   // First-time onboarding
   const onboardingComplete = useSettingsStore((state) => state.onboardingComplete);
   const setOnboardingComplete = useSettingsStore((state) => state.setOnboardingComplete);
+
+  // Refresh ICS calendar subscriptions in the background
+  useICSAutoSync();
 
   // Run migration and initialize auto-save on app startup
   useEffect(() => {
